@@ -50,6 +50,7 @@ import {
 import { AuditLog, CustomerMessage, EmailLog, Order, PaymentStatus, QRData, ShowcaseVideo } from '../../types';
 import {
   subscribeToLiveOrders,
+  syncOrderDirectlyToFirestore,
   deleteOrderDirectlyFromFirestore,
   deleteShowcaseVideoFromFirestore,
   saveShowcaseVideoToFirestore,
@@ -815,6 +816,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout,
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to approve order');
 
+      // Instantly sync approved state to Firestore for live client listener
+      await syncOrderDirectlyToFirestore({
+        ...targetOrder,
+        paymentStatus: 'PAID',
+        accessLink: linkToSend,
+        updatedAt: new Date().toISOString()
+      }).catch(() => {});
+
       showFeedback('success', `Order #${targetOrder.orderId} approved and access email dispatched!`);
       setApprovingOrder(null);
       setReviewingOrder(null);
@@ -843,6 +852,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ token, onLogout,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Failed to update order status');
+
+      // Instantly sync status to Firestore
+      const target = allOrders.find((o) => o.id === orderId || o.orderId === orderId);
+      if (target) {
+        await syncOrderDirectlyToFirestore({
+          ...target,
+          paymentStatus: status,
+          updatedAt: new Date().toISOString()
+        }).catch(() => {});
+      }
+
       showFeedback('success', `Order status successfully updated to ${status}`);
       if (reviewingOrder && reviewingOrder.id === orderId) {
         setReviewingOrder(data.order);

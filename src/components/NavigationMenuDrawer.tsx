@@ -415,7 +415,7 @@ export const NavigationMenuDrawer: React.FC<NavigationMenuDrawerProps> = ({
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                       <input
                         type="text"
-                        placeholder="Full Name"
+                        placeholder="e.g. Harish Singh"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required

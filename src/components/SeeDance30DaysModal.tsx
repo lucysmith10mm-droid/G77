@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { syncOrderDirectlyToFirestore } from '../lib/firebase';
 import { Order } from '../types';
+import { PaymentPendingTimerView } from './PaymentPendingTimerView';
 
 interface SeeDance30DaysModalProps {
   isOpen: boolean;
@@ -37,6 +38,7 @@ export const SeeDance30DaysModal: React.FC<SeeDance30DaysModalProps> = ({
   const [copiedUpi, setCopiedUpi] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [pendingOrder, setPendingOrder] = useState<Order | null>(null);
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
 
   const UPI_ID = 'harishsingh9208@okaxis';
@@ -126,7 +128,8 @@ export const SeeDance30DaysModal: React.FC<SeeDance30DaysModalProps> = ({
       // 3. Direct Firestore Sync
       await syncOrderDirectlyToFirestore(newOrder);
 
-      setCompletedOrder(newOrder);
+      // Transition to 2-minute live pending timer view
+      setPendingOrder(newOrder);
     } catch (err: any) {
       console.warn('Order submission error, falling back locally:', err);
       // Fallback order creation
@@ -150,13 +153,14 @@ export const SeeDance30DaysModal: React.FC<SeeDance30DaysModalProps> = ({
         updatedAt: new Date().toISOString(),
       };
       await syncOrderDirectlyToFirestore(fallbackOrder).catch(() => {});
-      setCompletedOrder(fallbackOrder);
+      setPendingOrder(fallbackOrder);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleCloseAll = () => {
+    setPendingOrder(null);
     setCompletedOrder(null);
     setTransactionRef('');
     setErrorMessage(null);
@@ -226,7 +230,28 @@ export const SeeDance30DaysModal: React.FC<SeeDance30DaysModalProps> = ({
 
           {/* Modal Body */}
           <div className="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4">
-            {completedOrder ? (
+            {pendingOrder ? (
+              /* 2-Minute Live Countdown Timer & Real-time Verification View */
+              <PaymentPendingTimerView
+                orderId={pendingOrder.orderId}
+                customerEmail={pendingOrder.customerEmail}
+                customerName={pendingOrder.customerName}
+                amount={AMOUNT_INR}
+                currency="INR"
+                referenceId={pendingOrder.paymentReference}
+                title="SEE DANCE 2.5 Access - Verification Pending"
+                onApproved={(approvedData) => {
+                  setCompletedOrder({
+                    ...pendingOrder,
+                    ...approvedData,
+                    paymentStatus: 'PAID'
+                  });
+                  setPendingOrder(null);
+                }}
+                onClose={handleCloseAll}
+                isDarkMode={isDarkMode}
+              />
+            ) : completedOrder ? (
               /* Success Screen */
               <div className="text-center py-6 space-y-4">
                 <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center border border-emerald-500/40 shadow-lg">
@@ -334,7 +359,7 @@ export const SeeDance30DaysModal: React.FC<SeeDance30DaysModalProps> = ({
                     <input
                       type="text"
                       required
-                      placeholder="Your Full Name *"
+                      placeholder="Full Name (e.g. Harish Singh) *"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       className={`w-full px-3 py-2 rounded-xl text-xs border outline-none transition-colors ${

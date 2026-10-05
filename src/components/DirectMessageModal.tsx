@@ -243,7 +243,7 @@ export const DirectMessageModal: React.FC<DirectMessageModalProps> = ({
                         type="text"
                         value={senderName}
                         onChange={(e) => setSenderName(e.target.value)}
-                        placeholder="John Doe"
+                        placeholder="e.g. Harish Singh"
                         className={`w-full pl-9 pr-3 py-2 rounded-xl text-xs border outline-none transition-colors ${
                           isDarkMode
                             ? 'bg-black/40 border-white/10 text-white focus:border-rose-400'

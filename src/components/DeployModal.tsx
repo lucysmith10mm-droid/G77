@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { AiModel } from '../data/aiModelsData';
+import { PaymentPendingTimerView } from './PaymentPendingTimerView';
+import { syncOrderDirectlyToFirestore } from '../lib/firebase';
 
 interface DeployModalProps {
   isOpen: boolean;
@@ -55,6 +57,7 @@ export const DeployModal: React.FC<DeployModalProps> = ({
   const [cardCvc, setCardCvc] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'crypto'>('card');
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [isPendingVerification, setIsPendingVerification] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [orderReference, setOrderReference] = useState('');
   const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -142,23 +145,35 @@ export const DeployModal: React.FC<DeployModalProps> = ({
 
     setIsProcessingPayment(true);
 
+    const generatedOrderRef = `ORD-2026-${Math.floor(100000 + Math.random() * 900000)}`;
+    setOrderReference(generatedOrderRef);
+
+    // Sync order to Firestore collection 'orders' with status PENDING for Admin Real-time approval
+    try {
+      await syncOrderDirectlyToFirestore({
+        id: generatedOrderRef,
+        orderId: generatedOrderRef,
+        customerName: customerName.trim() || 'Developer',
+        customerEmail: customerEmail.trim(),
+        planId: selectedTier,
+        planName: `${model.name} (${selectedTier.toUpperCase()})`,
+        amount: getTierPrice().amount,
+        amountCents: getTierPrice().amount * 100,
+        currency: 'USD',
+        duration: 'monthly',
+        paymentStatus: 'PENDING',
+        paymentReference: cardNumber ? `CARD-••••-${cardNumber.slice(-4)}` : 'ONLINE-GATEWAY',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+    } catch (err) {
+      console.warn('Firestore deploy order sync notice:', err);
+    }
+
     setTimeout(() => {
       setIsProcessingPayment(false);
-      const generatedOrderRef = `ORD-2026-${Math.floor(100000 + Math.random() * 900000)}`;
-      const newKey = generateLiveKey('prod');
-      setOrderReference(generatedOrderRef);
-      setProvisionedKey(newKey);
-      setIsProvisioned(true);
-      setPaymentSuccess(true);
-
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-        });
-      } catch {}
-    }, 1200);
+      setIsPendingVerification(true);
+    }, 600);
   };
 
   const copyToClipboard = (text: string, type: 'code' | 'key') => {
@@ -711,6 +726,28 @@ main();`;
                       <span>View Code Integration</span>
                     </button>
                   </div>
+                ) : isPendingVerification ? (
+                  /* 2-Minute Live Countdown Timer & Real-time Verification View */
+                  <PaymentPendingTimerView
+                    orderId={orderReference}
+                    customerEmail={customerEmail}
+                    customerName={customerName}
+                    amount={getTierPrice().amount}
+                    currency="USD"
+                    title={`${model.name} (${selectedTier.toUpperCase()}) - Verification Pending`}
+                    onApproved={() => {
+                      const newKey = generateLiveKey('prod');
+                      setProvisionedKey(newKey);
+                      setIsProvisioned(true);
+                      setIsPendingVerification(false);
+                      setPaymentSuccess(true);
+                      try {
+                        confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
+                      } catch {}
+                    }}
+                    onClose={() => setIsPendingVerification(false)}
+                    isDarkMode={isDarkMode}
+                  />
                 ) : (
                   /* Payment Form */
                   <form onSubmit={handleProcessPayment} className="space-y-4">
@@ -805,7 +842,7 @@ main();`;
                         <input
                           type="text"
                           required
-                          placeholder="Developer or Company Name"
+                          placeholder="e.g. Harish Singh"
                           value={customerName}
                           onChange={(e) => setCustomerName(e.target.value)}
                           className={`w-full px-3 py-2 rounded-xl text-xs border outline-none transition-colors ${

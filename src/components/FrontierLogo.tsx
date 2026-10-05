@@ -62,18 +62,20 @@ export const FrontierLogo: React.FC<FrontierLogoProps> = ({
         </div>
       </div>
 
-      {/* Horizontal Wordmark Typography */}
+      {/* Horizontal Wordmark Typography - buynet branding */}
       <div className="flex flex-col leading-none min-w-0">
-        <span className={`font-black ${textTitleSize} tracking-tight font-display flex items-center gap-1.5`}>
+        <span className={`font-black ${textTitleSize} tracking-tight font-display flex items-center`}>
           <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
-            FRONTIER
+            buy
           </span>
-          <span className="text-cyan-500 font-extrabold">AI</span>
+          <span className="text-cyan-400 font-extrabold bg-gradient-to-r from-cyan-400 via-indigo-400 to-rose-400 bg-clip-text text-transparent">
+            net
+          </span>
         </span>
         <span className={`text-[8.5px] sm:text-[9.5px] font-mono tracking-wider uppercase font-semibold mt-0.5 truncate hidden xs:inline ${
           isDarkMode ? 'text-slate-400' : 'text-slate-600'
         }`}>
-          MODEL MARKETPLACE
+          AI MARKETPLACE
         </span>
       </div>
     </div>

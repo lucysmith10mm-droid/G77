@@ -160,7 +160,7 @@ export const Footer: React.FC<FooterProps> = ({ onSecretTrigger, isDarkMode = tr
         {/* Bottom Strip: Copyright & Trust Badges */}
         <div className="pt-6 border-t border-white/[0.06] [html.light-theme_&]:border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
           <div className="text-slate-500 [html.light-theme_&]:text-slate-600">
-            © 2026 Frontier AI Marketplace. Unified Intelligence Architecture. All rights reserved.
+            © 2026 buynet · Frontier AI Marketplace. Unified Intelligence Architecture. All rights reserved.
           </div>
 
           <div className="flex items-center gap-4 text-[11px] text-slate-400 [html.light-theme_&]:text-slate-600">

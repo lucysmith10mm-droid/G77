@@ -28,6 +28,7 @@ import {
   fetchOrderStatusResilient
 } from '../lib/api';
 import { saveCustomerOrderId } from '../lib/customerOrders';
+import { PaymentPendingTimerView } from './PaymentPendingTimerView';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -348,22 +349,24 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </div>
           )}
 
-          {/* PROCESSING / VERIFYING STATE */}
+          {/* 2-MINUTE LIVE TIMER PROCESSING / VERIFYING STATE */}
           {orderStatus === 'PROCESSING' && (
-            <div id="payment_verifying_view" className="py-8 text-center space-y-5">
-              <div className="w-16 h-16 mx-auto rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 animate-spin">
-                <RefreshCw className="w-8 h-8" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Verifying Global Payment</h3>
-                <p className="text-sm text-slate-400 max-w-sm mx-auto">
-                  Awaiting confirmation from your payment provider. Your access pass will activate automatically the instant verification completes.
-                </p>
-              </div>
-              <div className="p-3 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-400 inline-block">
-                Checking payment gateway status every 2 seconds...
-              </div>
-            </div>
+            <PaymentPendingTimerView
+              orderId={activeOrder?.orderId || 'ORD-PENDING'}
+              customerEmail={customerEmail}
+              customerName={customerName}
+              amount={selectedPlan.amount}
+              currency="USD"
+              referenceId={activeOrder?.paymentReference}
+              title={`${selectedPlan.name} - Payment Pending Verification`}
+              onApproved={(approvedData) => {
+                setActiveOrder(approvedData || activeOrder);
+                setOrderStatus('PAID');
+                setPollingActive(false);
+                triggerConfetti();
+              }}
+              onClose={() => setOrderStatus('IDLE')}
+            />
           )}
 
           {/* STANDARD CHECKOUT FORM */}
@@ -424,7 +427,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       required
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="e.g. John Miller"
+                      placeholder="e.g. Harish Singh"
                       className="w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500"
                     />
                   </div>
