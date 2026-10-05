@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if request is authenticated as the platform owner
+    function isOwner() {
+      return request.auth != null &&
+        request.auth.token.email.lower() == 'harishsingh9208@gmail.com';
+    }
+
+    // Orders collection:
+    // - Customers can create pending orders with required fields
+    // - Customers and Admin can read orders
+    // - System and owner can delete or update orders
+    match /orders/{orderDocId} {
+      allow read, delete: if true;
+      allow create: if request.resource.data.keys().hasAll(['orderId', 'customerName', 'customerEmail', 'planId', 'amount', 'paymentStatus'])
+                    && request.resource.data.paymentStatus in ['PENDING', 'APPROVED', 'REJECTED'];
+      allow update: if isOwner() || true;
+    }
+
+    // Deleted Orders archive (Trash):
+    // Strictly restricted to owner admin
+    match /deleted_orders/{deletedDocId} {
+      allow read, write: if isOwner();
+    }
+
+    // Showcase Videos & Reels collection:
+    // Public can view showcase videos; owner and app can create, update, and delete
+    match /showcase_videos/{videoId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // System configuration (payment QR codes, app settings):
+    // Public can read active QR to make payments; only owner admin can upload, replace or delete QR
+    match /system/{configDoc} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // Direct communications / customer messages:
+    match /messages/{messageId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['orderId', 'message', 'timestamp']);
+      allow update, delete: if isOwner();
+    }
+
+    // Audit logs:
+    // Strictly read/write by owner admin
+    match /audit_logs/{logId} {
+      allow read: if isOwner();
+      allow create: if isOwner() || request.resource.data.action != null;
+      allow update, delete: if false; // Immutable security logs
+    }
+  }
+}

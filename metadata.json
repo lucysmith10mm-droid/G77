@@ -1,0 +1,6 @@
+{
+  "name": "SEE DANCE 2.5 + SEE DANCE 2.0",
+  "description": "Official secure digital product platform for SEE DANCE 2.5 and SEE DANCE 2.0 unlimited AI video generator models.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

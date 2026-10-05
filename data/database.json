@@ -1,0 +1,113 @@
+{
+  "orders": [],
+  "deletedOrders": [],
+  "messages": [],
+  "auditLogs": [
+    {
+      "auditLogId": "AUD-PROD-INIT-001",
+      "adminUser": "harishsingh9208@gmail.com",
+      "action": "PRODUCTION_SYSTEM_INITIALIZED",
+      "timestamp": "2026-09-16T02:30:00.000Z",
+      "metadata": {
+        "status": "active",
+        "videosCount": 6,
+        "note": "Safe cleanup completed. System active and ready for production."
+      }
+    }
+  ],
+  "emails": [],
+  "qrConfig": {
+    "imageUrl": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 300\" width=\"300\" height=\"300\"><rect width=\"300\" height=\"300\" fill=\"%23ffffff\" rx=\"16\"/><rect x=\"20\" y=\"20\" width=\"80\" height=\"80\" fill=\"%230f172a\" rx=\"10\"/><rect x=\"35\" y=\"35\" width=\"50\" height=\"50\" fill=\"%23ffffff\" rx=\"5\"/><rect x=\"45\" y=\"45\" width=\"30\" height=\"30\" fill=\"%230f172a\" rx=\"3\"/><rect x=\"200\" y=\"20\" width=\"80\" height=\"80\" fill=\"%230f172a\" rx=\"10\"/><rect x=\"215\" y=\"35\" width=\"50\" height=\"50\" fill=\"%23ffffff\" rx=\"5\"/><rect x=\"225\" y=\"45\" width=\"30\" height=\"30\" fill=\"%230f172a\" rx=\"3\"/><rect x=\"20\" y=\"200\" width=\"80\" height=\"80\" fill=\"%230f172a\" rx=\"10\"/><rect x=\"35\" y=\"215\" width=\"50\" height=\"50\" fill=\"%23ffffff\" rx=\"5\"/><rect x=\"45\" y=\"225\" width=\"30\" height=\"30\" fill=\"%230f172a\" rx=\"3\"/><rect x=\"120\" y=\"20\" width=\"20\" height=\"40\" fill=\"%230f172a\"/><rect x=\"150\" y=\"30\" width=\"30\" height=\"20\" fill=\"%230f172a\"/><rect x=\"120\" y=\"80\" width=\"60\" height=\"20\" fill=\"%230f172a\"/><rect x=\"115\" y=\"115\" width=\"70\" height=\"70\" fill=\"%230f172a\" rx=\"6\"/><rect x=\"130\" y=\"130\" width=\"40\" height=\"40\" fill=\"%238b5cf6\" rx=\"4\"/><rect x=\"20\" y=\"120\" width=\"40\" height=\"20\" fill=\"%230f172a\"/><rect x=\"40\" y=\"150\" width=\"50\" height=\"30\" fill=\"%230f172a\"/><rect x=\"200\" y=\"120\" width=\"50\" height=\"20\" fill=\"%230f172a\"/><rect x=\"240\" y=\"150\" width=\"40\" height=\"30\" fill=\"%230f172a\"/><rect x=\"120\" y=\"200\" width=\"30\" height=\"40\" fill=\"%230f172a\"/><rect x=\"170\" y=\"210\" width=\"40\" height=\"30\" fill=\"%230f172a\"/><rect x=\"130\" y=\"260\" width=\"60\" height=\"20\" fill=\"%230f172a\"/><rect x=\"220\" y=\"220\" width=\"60\" height=\"60\" fill=\"%230f172a\" rx=\"6\"/><text x=\"150\" y=\"155\" font-family=\"sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"%23ffffff\" text-anchor=\"middle\">UPI</text><text x=\"150\" y=\"292\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"bold\" fill=\"%2364748b\" text-anchor=\"middle\">SCAN &amp; PAY USING ANY UPI APP</text></svg>",
+    "uploadedAt": "2026-09-09T15:34:43.874Z",
+    "active": true,
+    "fileName": "owner_payment_qr.svg",
+    "upiId": "harishsingh9208@okaxis",
+    "note": "Active Official Payment QR"
+  },
+  "videos": [
+    {
+      "id": "vid-1789524707341-z05aum",
+      "title": "31651",
+      "subtitle": "SEEDANCE 2.5 Official Generation",
+      "badge": "SEEDANCE 2.5",
+      "videoUrl": "/videos/upload_1789524705965_31651_mp4.mp4",
+      "thumbnailUrl": "/videos/thumb_1789524705965_31651_mp4.jpg",
+      "prompt": "Official SEE DANCE showcase reel",
+      "duration": "0:05",
+      "resolution": "4K Native",
+      "fps": 60,
+      "uploadedAt": "2026-09-16T02:11:47.341Z",
+      "order": 7
+    },
+    {
+      "id": "vid-1789524806810-i28gtm",
+      "title": "31650",
+      "subtitle": "SEEDANCE 2.5 Official Generation",
+      "badge": "SEEDANCE 2.5",
+      "videoUrl": "/videos/upload_1789524806605_31650_mp4.mp4",
+      "thumbnailUrl": "/videos/thumb_1789524806605_31650_mp4.jpg",
+      "prompt": "Official SEE DANCE showcase reel",
+      "duration": "0:05",
+      "resolution": "4K Native",
+      "fps": 60,
+      "uploadedAt": "2026-09-16T02:13:26.810Z",
+      "order": 8
+    },
+    {
+      "id": "vid-1789524835829-w7gty6",
+      "title": "31649",
+      "subtitle": "SEEDANCE 2.5 Official Generation",
+      "badge": "SEEDANCE 2.5",
+      "videoUrl": "/videos/upload_1789524835611_31649_mp4.mp4",
+      "thumbnailUrl": "/videos/thumb_1789524835611_31649_mp4.jpg",
+      "prompt": "Official SEE DANCE showcase reel",
+      "duration": "0:05",
+      "resolution": "4K Native",
+      "fps": 60,
+      "uploadedAt": "2026-09-16T02:13:55.829Z",
+      "order": 9
+    },
+    {
+      "id": "vid-1789524854022-8d68pg",
+      "title": "31648",
+      "subtitle": "SEEDANCE 2.5 Official Generation",
+      "badge": "SEEDANCE 2.5",
+      "videoUrl": "/videos/upload_1789524853830_31648_mp4.mp4",
+      "thumbnailUrl": "/videos/thumb_1789524853830_31648_mp4.jpg",
+      "prompt": "Official SEE DANCE showcase reel",
+      "duration": "0:05",
+      "resolution": "4K Native",
+      "fps": 60,
+      "uploadedAt": "2026-09-16T02:14:14.022Z",
+      "order": 10
+    },
+    {
+      "id": "vid-1789524895189-6wikne",
+      "title": "31646",
+      "subtitle": "SEEDANCE 2.5 Official Generation",
+      "badge": "SEEDANCE 2.5",
+      "videoUrl": "/videos/upload_1789524894990_31646_mp4.mp4",
+      "thumbnailUrl": "/videos/thumb_1789524894990_31646_mp4.jpg",
+      "prompt": "Official SEE DANCE showcase reel",
+      "duration": "0:05",
+      "resolution": "4K Native",
+      "fps": 60,
+      "uploadedAt": "2026-09-16T02:14:55.189Z",
+      "order": 9
+    },
+    {
+      "id": "vid-1789524950101-fkmbjw",
+      "title": "31647",
+      "subtitle": "SEEDANCE 2.5 Official Generation",
+      "badge": "SEEDANCE 2.5",
+      "videoUrl": "/videos/upload_1789524949910_31647_mp4.mp4",
+      "thumbnailUrl": "/videos/thumb_1789524949910_31647_mp4.jpg",
+      "prompt": "Official SEE DANCE showcase reel",
+      "duration": "0:05",
+      "resolution": "4K Native",
+      "fps": 60,
+      "uploadedAt": "2026-09-16T02:15:50.101Z",
+      "order": 6
+    }
+  ]
+}

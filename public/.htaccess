@@ -1,0 +1,22 @@
+# Apache / cPanel / LiteSpeed Configuration for protectapk.com
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Security headers
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+
+  # Optional: If you run Node.js backend on port 3000 and mod_proxy is enabled,
+  # uncomment the following 2 lines to proxy /api requests to the Node server:
+  # RewriteRule ^api/(.*)$ http://127.0.0.1:3000/api/$1 [P,L]
+
+  # Direct existing files and directories to be served statically
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # All other routes go to index.html (SPA Fallback)
+  RewriteRule ^ index.html [L]
+</IfModule>

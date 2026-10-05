@@ -1,0 +1,108 @@
+{
+  "entities": {
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase orders for SEE DANCE 2.5 + SEE DANCE 2.0 unlimited AI video models",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Internal unique identifier" },
+        "orderId": { "type": "string", "description": "Public Order reference ID (ORD-XXXXXX)" },
+        "customerName": { "type": "string", "description": "Full name of customer" },
+        "customerEmail": { "type": "string", "format": "email", "description": "Customer contact email" },
+        "customerPhone": { "type": "string", "description": "Customer contact telephone/WhatsApp" },
+        "planId": { "type": "string", "enum": ["PLAN_7_DAYS", "PLAN_30_DAYS", "PLAN_LIFETIME"] },
+        "planName": { "type": "string" },
+        "duration": { "type": "string" },
+        "amount": { "type": "number" },
+        "paymentStatus": { "type": "string", "enum": ["PENDING", "APPROVED", "REJECTED"] },
+        "paymentReference": { "type": "string" },
+        "accessLink": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "approvedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "orderId", "customerName", "customerEmail", "customerPhone", "planId", "amount", "paymentStatus", "createdAt"]
+    },
+    "QRConfig": {
+      "title": "QRConfig",
+      "description": "Owner active payment QR code configuration",
+      "type": "object",
+      "properties": {
+        "imageUrl": { "type": "string" },
+        "upiId": { "type": "string" },
+        "active": { "type": "boolean" },
+        "uploadedAt": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" }
+      },
+      "required": ["imageUrl", "active", "uploadedAt"]
+    },
+    "CustomerMessage": {
+      "title": "CustomerMessage",
+      "description": "Direct communications sent from owner to order customers",
+      "type": "object",
+      "properties": {
+        "messageId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "message": { "type": "string" },
+        "sentAt": { "type": "string", "format": "date-time" },
+        "sentBy": { "type": "string" }
+      },
+      "required": ["messageId", "orderId", "customerEmail", "message", "sentAt", "sentBy"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Security and administrative audit trail",
+      "type": "object",
+      "properties": {
+        "auditLogId": { "type": "string" },
+        "adminUser": { "type": "string" },
+        "action": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["auditLogId", "adminUser", "action", "timestamp"]
+    },
+    "ShowcaseVideo": {
+      "title": "ShowcaseVideo",
+      "description": "Showcase video reels displayed in the live interactive gallery slider",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "badge": { "type": "string" },
+        "videoUrl": { "type": "string" },
+        "thumbnailUrl": { "type": "string" },
+        "prompt": { "type": "string" },
+        "duration": { "type": "string" },
+        "resolution": { "type": "string" },
+        "fps": { "type": "number" },
+        "uploadedAt": { "type": "string", "format": "date-time" },
+        "order": { "type": "number" }
+      },
+      "required": ["id", "title", "badge", "videoUrl"]
+    }
+  },
+  "firestore": {
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of customer purchase orders"
+    },
+    "/showcase_videos/{videoId}": {
+      "schema": "ShowcaseVideo",
+      "description": "Collection of showcase video reels for the live slider"
+    },
+    "/system/qr_config": {
+      "schema": "QRConfig",
+      "description": "System document storing active payment QR configuration"
+    },
+    "/messages/{messageId}": {
+      "schema": "CustomerMessage",
+      "description": "Administrative communications dispatched to customers"
+    },
+    "/audit_logs/{logId}": {
+      "schema": "AuditLog",
+      "description": "Administrative actions and security trace logs"
+    }
+  }
+}
